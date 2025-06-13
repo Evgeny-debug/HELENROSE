@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helen Rose | Мильні троянди</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    header video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: -1;
+    }
+
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+
+    .sticky-header .logo {
+      font-size: 1.8rem;
+      margin: 0;
+      letter-spacing: 0.2em;
+    }
+
+    .menu-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 30px;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .menu-toggle span {
+      height: 4px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.4s;
+    }
+
+    .menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(255, 182, 193, 0.9);
+      color: #333;
+      padding: 40px 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 10;
+      width: 280px;
+    }
+
+    .menu-panel.open {
+      transform: translateX(0);
+    }
+
+    .menu-panel ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-panel li {
+      margin: 20px 0;
+      font-size: 1.1rem;
+    }
+
+    .logo {
+      font-size: 4rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      font-family: 'Georgia', serif;
+      margin: 0;
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+
+    .hero-text {
+      margin-top: 2rem;
+      z-index: 1;
+      max-width: 600px;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 2.5rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .hero-text p {
+      font-size: 1.4rem;
+      margin: 0 0 2rem 0;
+    }
+
+    .btn {
+      padding: 12px 35px;
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.4s ease;
+    }
+
+    .btn:hover {
+      background-color: white;
+      color: black;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: 0.4s;
+    }
+
+    .gallery-item:hover img {
+      filter: brightness(60%);
+    }
+
+    .gallery-item .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: 0.4s;
+    }
+
+    .gallery-item:hover .overlay {
+      opacity: 1;
+    }
+
+    .gallery-item .overlay button {
+      padding: 10px 20px;
+      border: none;
+      background: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .social-panel {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px 40px;
+      font-size: 1.2rem;
+      gap: 15px;
+    }
+
+    .social-panel a {
+      color: #bbb;
+      transition: 0.3s;
+    }
+
+    .social-panel a:hover {
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 20px 40px;
+      font-size: 0.9rem;
+      color: #ccc;
+      background: #1a1a1a;
+      position: relative;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const video = document.querySelector("header video");
+      const sticky = document.querySelector(".sticky-header");
+      const header = document.querySelector("header");
+
+      if (video) {
+        video.addEventListener('loadedmetadata', () => {
+          video.currentTime = 13;
+          video.playbackRate = 0.5;
+          video.play();
+        });
+
+        video.addEventListener('timeupdate', () => {
+          if (video.currentTime >= video.duration - 0.1) {
+            video.currentTime = 13;
+            video.play();
+          }
+        });
+      }
+
+      window.addEventListener("scroll", function () {
+        const headerBottom = header.getBoundingClientRect().bottom;
+        if (headerBottom <= 0) {
+          sticky.style.display = "flex";
+        } else {
+          sticky.style.display = "none";
+        }
+      });
+
+      const toggle = document.querySelector('.menu-toggle');
+      const panel = document.querySelector('.menu-panel');
+
+      toggle.addEventListener('click', (e) => {
+        toggle.classList.toggle('open');
+        panel.classList.toggle('open');
+        e.stopPropagation();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!panel.contains(e.target) && !toggle.contains(e.target)) {
+          toggle.classList.remove('open');
+          panel.classList.remove('open');
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="sticky-header">
+    <div class="logo">Helen Rose</div>
+  </div>
+  <header>
+    <video autoplay muted loop playsinline>
+      <source src="assets/img/shapka.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="menu-panel">
+      <ul>
+        <li>Головна</li>
+        <li>Про нас</li>
+        <li>Букети</li>
+        <li>Доставка</li>
+        <li>Контакти</li>
+      </ul>
+    </div>
+    <div class="logo">Helen Rose</div>
+    <div class="hero-text">
+      <h1>Мильні троянди на замовлення</h1>
+      <p>Ідеальні букети ручної роботи для будь-якої події</p>
+      <a href="#about" class="btn">Дізнатися більше</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>Про Helen Rose</h2>
+    <p>Привіт! Мене звати Helen, і я створюю унікальні композиції з мильних троянд. Кожен букет — це емоції, ніжність і вишуканість, загорнуті в аромат і колір. Ідеально підходять для подарунка, декору чи особливого моменту.</p>
+  </section>
+
+  <section class="gallery">
+    <div class="gallery-item">
+      <img src="assets/img/content1.jpg" alt="Контент 1">
+      <div class="overlay"><button>Галерея троянд</button></div>
+    </div>
+    <div class="gallery-item">
+      <img src="assets/img/content2.jpg" alt="Контент 2">
+      <div class="overlay"><button>Галерея троянд</button></div>
+    </div>
+    <div class="gallery-item">
+      <img src="assets/img/content3.jpg" alt="Контент 3">
+      <div class="overlay"><button>Галерея троянд</button></div>
+    </div>
+    <div class="gallery-item">
+      <img src="assets/img/content4.jpg" alt="Контент 4">
+      <div class="overlay"><button>Галерея троянд</button></div>
+    </div>
+    <div class="gallery-item">
+      <img src="assets/img/content5.jpg" alt="Контент 5">
+      <div class="overlay"><button>Галерея троянд</button></div>
+    </div>
+  </section>
+
+  <footer>
+    <section class="social-panel">
+      <a href="https://t.me/your_username" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+      <a href="https://instagram.com/your_username" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="viber://chat?number=380000000000" title="Viber"><i class="fab fa-viber"></i></a>
+    </section>
+    &copy; 2025 Helen Rose. Усі права захищено.
+  </footer>
+</body>
+</html>
