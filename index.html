@@ -55,20 +55,27 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      display: none;
+      background: #ffd6e0;
+      display: flex;
       justify-content: center;
       align-items: center;
       height: 60px;
-      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: all 0.5s ease;
       z-index: 1000;
+    }
+
+    .sticky-header.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .sticky-header .logo {
       font-size: 1.8rem;
       margin: 0;
       letter-spacing: 0.2em;
+      color: #cc8ea3;
     }
 
     .menu-toggle {
@@ -184,57 +191,53 @@
       text-align: center;
     }
 
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      max-width: 1400px;
+    .story-block {
+      max-width: 1200px;
       margin: 0 auto;
       padding: 60px 20px;
     }
 
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 12px;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: 0.4s;
-    }
-
-    .gallery-item:hover img {
-      filter: brightness(60%);
-    }
-
-    .gallery-item .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .story-row {
       display: flex;
-      justify-content: center;
+      flex-wrap: wrap;
       align-items: center;
-      opacity: 0;
-      transition: 0.4s;
+      margin-bottom: 60px;
+      gap: 30px;
     }
 
-    .gallery-item:hover .overlay {
-      opacity: 1;
+    .story-row.reverse {
+      flex-direction: row-reverse;
     }
 
-    .gallery-item .overlay button {
-      padding: 10px 20px;
-      border: none;
-      background: rgba(255,255,255,0.85);
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
+    .story-text {
+      flex: 1 1 400px;
+      padding: 20px;
+    }
+
+    .story-text h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .story-text p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .story-img {
+      flex: 1 1 350px;
+      max-width: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .story-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 12px;
     }
 
     .social-panel {
@@ -286,11 +289,13 @@
       }
 
       window.addEventListener("scroll", function () {
-        const headerBottom = header.getBoundingClientRect().bottom;
-        if (headerBottom <= 0) {
-          sticky.style.display = "flex";
+        const headerHeight = header.offsetHeight;
+        const scrollPosition = window.scrollY;
+
+        if (scrollPosition >= headerHeight - sticky.offsetHeight) {
+          sticky.classList.add("visible");
         } else {
-          sticky.style.display = "none";
+          sticky.classList.remove("visible");
         }
       });
 
@@ -348,26 +353,33 @@
     <p>Привіт! Мене звати Helen, і я створюю унікальні композиції з мильних троянд. Кожен букет — це емоції, ніжність і вишуканість, загорнуті в аромат і колір. Ідеально підходять для подарунка, декору чи особливого моменту.</p>
   </section>
 
-  <section class="gallery">
-    <div class="gallery-item">
-      <img src="assets/img/content1.jpg" alt="Контент 1">
-      <div class="overlay"><button>Галерея троянд</button></div>
+  <section class="story-block">
+    <div class="story-row">
+      <div class="story-text">
+        <h2>Мій перший букет</h2>
+        <p>Я створила його для мами на день народження. Це був маленький рожевий букет, такий ніжний, як її усмішка. Я пам’ятаю, як вона розплакалась — не очікувала, що «мильні» квіти можуть викликати справжні емоції. Саме тоді я зрозуміла, що хочу дарувати радість кожній жінці.</p>
+      </div>
+      <div class="story-img">
+        <img src="assets/img/content1.jpg" alt="Перший букет">
+      </div>
     </div>
-    <div class="gallery-item">
-      <img src="assets/img/content2.jpg" alt="Контент 2">
-      <div class="overlay"><button>Галерея троянд</button></div>
+    <div class="story-row reverse">
+      <div class="story-text">
+        <h2>Весільна казка</h2>
+        <p>Одного разу я створювала композицію для молодої нареченої. Вона хотіла щось особливе — не просто квіти, а спогад на все життя. Ми обрали біло-рожеву гаму, і кожна троянда символізувала щастя, ніжність і новий початок. Вона подякувала мені зі сльозами щастя на очах — і це була моя нагорода.</p>
+      </div>
+      <div class="story-img">
+        <img src="assets/img/content2.jpg" alt="Весільна історія">
+      </div>
     </div>
-    <div class="gallery-item">
-      <img src="assets/img/content3.jpg" alt="Контент 3">
-      <div class="overlay"><button>Галерея троянд</button></div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/content4.jpg" alt="Контент 4">
-      <div class="overlay"><button>Галерея троянд</button></div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/content5.jpg" alt="Контент 5">
-      <div class="overlay"><button>Галерея троянд</button></div>
+    <div class="story-row">
+      <div class="story-text">
+        <h2>Букет на памʼять</h2>
+        <p>Клієнтка замовила букет для своєї бабусі, яка вже не могла приймати живі квіти через алергію. Вона хотіла, щоб у вазі завжди було щось красиве. Я підібрала теплі кольори, додала трохи лаванди — і вийшла композиція, що випромінює спокій. Її бабуся усміхнулася, коли побачила — і це зробило мій день.</p>
+      </div>
+      <div class="story-img">
+        <img src="assets/img/content3.jpg" alt="Букет для бабусі">
+      </div>
     </div>
   </section>
 
