@@ -32,7 +32,6 @@
     }
   }
   </script>
-  <!-- Стилі і скрипти йдуть далі -->
 
   <style>
     * {
@@ -296,26 +295,31 @@
       position: relative;
     }
   </style>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const video = document.querySelector("header video");
+      const videoPlayer = document.getElementById("videoPlayer");
       const sticky = document.querySelector(".sticky-header");
       const header = document.querySelector("header");
 
-      if (video) {
-        video.addEventListener('loadedmetadata', () => {
-          video.currentTime = 13;
-          video.playbackRate = 0.5;
-          video.play();
-        });
+      const videoSources = [
+        "assets/img/shapka_4K.mp4",
+        "assets/img/shapka_5K.mp4",
+        "assets/img/shapka_6K.mp4"
+      ];
+      let currentVideo = 0;
 
-        video.addEventListener('timeupdate', () => {
-          if (video.currentTime >= video.duration - 0.1) {
-            video.currentTime = 13;
-            video.play();
-          }
-        });
-      }
+      videoPlayer.addEventListener("loadedmetadata", () => {
+        videoPlayer.currentTime = 13;
+        videoPlayer.playbackRate = 0.5;
+        videoPlayer.play();
+      });
+
+      videoPlayer.addEventListener("ended", () => {
+        currentVideo = (currentVideo + 1) % videoSources.length;
+        videoPlayer.src = videoSources[currentVideo];
+        videoPlayer.load();
+      });
 
       window.addEventListener("scroll", function () {
         const headerHeight = header.offsetHeight;
@@ -350,10 +354,11 @@
   <div class="sticky-header">
     <div class="logo">Helen Rose</div>
   </div>
+
   <header>
-    <video autoplay muted loop playsinline>
+    <video id="videoPlayer" autoplay muted playsinline>
       <source src="assets/img/shapka_4K.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+      Ваш браузер не підтримує відео.
     </video>
     <div class="menu-toggle">
       <span></span>
